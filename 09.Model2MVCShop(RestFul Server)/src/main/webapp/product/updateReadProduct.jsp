@@ -6,14 +6,28 @@
 <html>
 <head>
 
+<title>Insert title here</title>
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+
+$(function() {
+	$("form").attr("method", "POST");
+})
+
+$(function() {
+	
+	$("td.ct_btn01:contains('확인')").bind("click", function() {
+		self.location = "/product/listProduct?menu=manage";
+	});
+});
+</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -121,7 +135,10 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
+					<!-- ////////////////// jQuery Event 처리로 변경됨 ///////////////////////// 
 					<a href="/product/listProduct?menu=manage">확인</a>
+					 ////////////////////////////////////////////////////////////////////////////////////////////////// -->
+					확인
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

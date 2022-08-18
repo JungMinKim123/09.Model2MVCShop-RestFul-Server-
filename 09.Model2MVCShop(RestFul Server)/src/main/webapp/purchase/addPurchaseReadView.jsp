@@ -7,12 +7,20 @@ Purchase vo = (Purchase)request.getAttribute("addVO");
 --%>
 <html>
 <head>
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+
+$(function() {
+	$("form").attr("method", "post");
+})
+</script>
 <title>Insert title here</title>
 </head>
 
 <body>
 
-<form name="updatePurchase" action="/purchase/updatePurchase?tranNo=${addVO.tranNo }" method="post">
+<form name="updatePurchase">
 
 다음과 같이 구매가 되었습니다.
 

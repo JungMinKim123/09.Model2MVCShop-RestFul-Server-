@@ -12,14 +12,32 @@ Purchase vo = (Purchase)request.getAttribute("updateview");
 
 <title>구매정보 수정</title>
 
-<script type="text/javascript" src="../javascript/calendar.js">
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="../javascript/calendar.js"></script>
+<script type="text/javascript">
+
+$(function() {
+	$("form").attr("method", "POST");
+});
+
+$(function() {
+	$("input[name='change']").bind("click", function() {
+		$("form").attr("action", "/purchase/updatePurchase?tranNo=${ updateview.tranNo }").submit();
+	});
+});
+$(function() {
+	$("td.ct_btn01:contains('취소')").bind("click", function() {
+		history.go(-1);
+	});
+});
+
 </script>
 
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="updatePurchase" method="post"	action="/purchase/updatePurchase?tranNo=${ updateview.tranNo }">
+<form name="updatePurchase">
 
 <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -137,7 +155,7 @@ Purchase vo = (Purchase)request.getAttribute("updateview");
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-					<input type="submit" value="수정"/>
+					<input type="submit" name="change" value="수정"/>
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

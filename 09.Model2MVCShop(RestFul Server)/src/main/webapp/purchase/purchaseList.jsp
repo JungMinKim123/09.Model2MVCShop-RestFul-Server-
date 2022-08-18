@@ -20,11 +20,31 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 	function fncGetUserList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
+		$("#currentPage").val(currentPage)
+		$("form").attr("method", "POST").attr("action", "/purchase/listPurchase").submit();
 	}
+	
+	$(function() {
+		$(".ct_list_pop td:nth-child(1)").bind("click", function() {
+			console.log($(this).text().trim());
+			self.location = "/purchase/getPurchase?tranNo="+$(this).text().trim();
+		});
+		
+		$(".ct_list_pop td:nth-child(3)").bind("click", function() {
+			console.log($(this).text().trim());
+			self.location = "/user/getUser?userId="+$(this).text().trim();
+		});
+		
+		$("input[name='arrival']").bind("click", function() {
+			console.log("asdfe");
+			self.location = "/purchase/updateTranCode?prodNo="+$(this).parent().parent().attr("id")+"&tranCode=3";
+		});
+		
+	});
+
 </script>
 </head>
 
@@ -32,7 +52,7 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/purchase/listPurchase" method="post">
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -77,13 +97,19 @@
 	--%>
 	<c:forEach var="vo" items="${list}">
 	
-	<tr class="ct_list_pop">
+	<tr class="ct_list_pop" id="${ vo.purchaseProd.prodNo }">
 		<td align="center">
+		<!-- 
 			<a href="/purchase/getPurchase?tranNo=${ vo.tranNo }">${ vo.tranNo }</a>
+		 -->
+		 ${ vo.tranNo }
 		</td>
 		<td></td>
 		<td align="left">
+		<!-- 
 			<a href="/user/getUser?userId=${ vo.buyer.userId }">${ vo.buyer.userId }</a>
+		 -->
+		 ${ vo.buyer.userId }
 		</td>
 		<td></td>
 		<td align="left">${ vo.receiverName }</td>
@@ -106,7 +132,10 @@
 		<td align="left">
 			<c:if test="${ !empty vo.tranCode }" >
 			<c:if test="${ fn:trim(vo.tranCode) == 2 }" >
+		<!-- 
 			<a href="/purchase/updateTranCode?prodNo=${ vo.purchaseProd.prodNo }&tranCode=3">¹°°ÇµµÂø</a>
+		 -->
+		 	<input type="button" name="arrival" value="¹°°ÇµµÂø"></button>
 			</c:if>
 			</c:if>
 		</td>

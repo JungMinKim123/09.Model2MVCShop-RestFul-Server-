@@ -6,14 +6,34 @@
 <html>
 <head>
 
+<title>Insert title here</title>
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+
+$(function() {
+	$("form").attr("method", "POST");
+});
+
+$(function() {
+	$("td.ct_btn01:contains('구매')").bind("click", function() {
+	self.location = "/purchase/addPurchase?prod_no=${ prod.prodNo }";
+	});
+});
+
+$(function() {
+	$("td.ct_btn01:contains('이전')").bind("click", function() {
+		history.go(-1);
+	});
+});
+</script>
+
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -133,7 +153,10 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
+				<!-- jQuery 변경 전 
 					<a href="/purchase/addPurchase?prod_no=${ prod.prodNo }">구매</a>
+				-->
+				구매
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -144,7 +167,10 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
+				<!-- jQuery 변경 전 
 					<a href="javascript:history.go(-1)">이전</a>
+				-->
+				이전
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23">

@@ -40,10 +40,20 @@
 		$("td.ct_btn01:contains('검색')").bind("click", function() {
 			fncGetUserList('1');
 		});
-
+		
 		$(".ct_list_pop td:nth-child(3)").bind("click", function() {
-			//alert($("#${prod.prodNo}").val());
-			self.location = "/product/updateProduct?prodNo="+$(this).parent().attr("id").trim()+"&menu=${ menu }";
+		//alert($("#${prod.prodNo}").val());
+			if(${menu=='manage'}){
+				self.location = "/product/updateProduct?prodNo="+$(this).parent().attr("id").trim()+"&menu=${ menu }";
+			}
+			if(${menu=='search'}){
+				self.location = "/product/getProduct?prodNo="+$(this).parent().attr("id").trim()+"&menu=${ menu }";
+			}
+			});
+		
+		$("input[name='respone']").bind("click", function() {
+				console.log('sadfsaf');
+				self.location = "/purchase/updateTranCode?prodNo="+$(this).parent().parent().attr("id")+"&tranCode=2";
 		});
 	});
 	
@@ -152,7 +162,10 @@
 					<td></td>
 					<td align="left"><c:if test="${ ! empty prod.proTranCode }">
 									 <c:if test="${ fn:trim(prod.proTranCode)==1}">
+									 <!--  
 									 	구매완료 <a href="/purchase/updateTranCode?prodNo=${ prod.prodNo }&tranCode=2">배송하기</a>
+									 -->
+									 구매완료<input type= "button" name="respone" value="배송하기">
 									 </c:if>
 									 <c:if test="${ fn:trim(prod.proTranCode)==2}">
 									 	배송중
@@ -189,8 +202,7 @@
 		
 		</c:if>
 		<c:if test="${ menu=='search'}">
-		<form name="detailForm" action="/product/listProduct?menu=${ menu }"
-			method="post">
+		<form name="detailForm">
 
 			<table width="100%" height="37" border="0" cellpadding="0"
 				cellspacing="0">
@@ -291,6 +303,7 @@
 									</c:if>
 					</td>
 				</tr>
+				<tr>
 				<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 				</tr>
 				</c:forEach>
@@ -307,8 +320,9 @@
 				</tr>
 			</table>
 			<!--  페이지 Navigator 끝 -->
+			</form>
 			</c:if>
-		</form>
+		
 	</div>
 
 </body>
