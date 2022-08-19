@@ -3,6 +3,7 @@ package com.model2.mvc.web.product;
 import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,24 +55,33 @@ public class ProductRestController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value="json/addProduct", method = RequestMethod.POST)
-	public String addProduct(@ModelAttribute("ProdVO") Product product, @RequestParam("fileUploadName") MultipartFile file) throws Exception{
+	public Map<String, Object> addProduct(@RequestBody Product product) throws Exception{
 		
-		System.out.println("/product/addProduct : POST");
+		System.out.println("/product/json/addProduct : POST");
 		
-		if(file != null & file.getSize() >0) {
-			
-			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
-			product.setFileName(file.getOriginalFilename());
-		}
-		String md = product.getManuDate(); 
-		String[] manu = md.split("-");
-		String manudate = manu[0]+manu[1]+manu[2];
-		product.setManuDate(manudate);
+//		if(file != null & file.getSize() >0) {
+//			
+//			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
+//			product.setFileName(file.getOriginalFilename());
+//		}
 		
+		String manuDate = product.getManuDate().replace("-", "");
+		product.setManuDate(manuDate);
+		System.out.println(manuDate);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
 		productService.addProduct(product);
 		
+		map.put("Product", product);
 		
-		return "forward:/product/readProductView.jsp";
+		//map.put("")
+		
+//		String md = product.getManuDate(); 
+//		String[] manu = md.split("-");
+//		String manudate = manu[0]+manu[1]+manu[2];
+//		product.setManuDate(manudate);
+		
+		return map;
 	}
 
 //	@RequestMapping("/getProduct.do")
@@ -97,16 +108,19 @@ public class ProductRestController {
 	
 //	@RequestMapping("/updateProduct.do")
 	@RequestMapping(value = "json/updateProduct", method = RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("update") Product prod, @RequestParam("fileUploadName") MultipartFile file) throws Exception{
+	public Map<String, Object> updateProduct(@RequestBody Product prod) throws Exception{
 		
 		System.out.println("/product/updateProduct : POST");
-		if( file != null & file.getSize() >0) {
-			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
-			prod.setFileName(file.getOriginalFilename());
-		}
-		productService.updateProduct(prod);
+//		if( file != null & file.getSize() >0) {
+//			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
+//			prod.setFileName(file.getOriginalFilename());
+//		}
 		
-		return "forward:/product/updateReadProduct.jsp";
+		Map<String, Object> map = new HashMap<String, Object>();
+		productService.updateProduct(prod);
+		map.put("updateProduct", prod);
+		
+		return map;
 	}
 	
 //	@RequestMapping("/updateProductView.do")
@@ -122,7 +136,7 @@ public class ProductRestController {
 	
 //	@RequestMapping("/listProduct.do")
 	@RequestMapping(value = "json/listProduct")
-	public String listProduct(@ModelAttribute("Search") Search search, Model model, @RequestParam("menu") String menu) throws Exception{
+	public Map<String, Object> listProduct(@RequestBody Search search) throws Exception{
 		
 		System.out.println("json/product/listProduct : GET / POST");
 		
@@ -137,14 +151,9 @@ public class ProductRestController {
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue() , pageUnit, pageSize);
 		System.out.println(resultPage);
 		
+		map.put("resultPage", resultPage);
+		map.put("search", search);
 		
-		model.addAttribute("menu",menu);
-		model.addAttribute("list",map.get("list"));
-		model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
-		
-		
-		
-		return "forward:/product/productList.jsp";
+		return map;
 	}
 }

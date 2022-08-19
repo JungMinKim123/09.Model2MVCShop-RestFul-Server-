@@ -60,11 +60,16 @@ public class ProductController {
 			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
 			product.setFileName(file.getOriginalFilename());
 		}
-		String md = product.getManuDate(); 
-		String[] manu = md.split("-");
-		String manudate = manu[0]+manu[1]+manu[2];
-		product.setManuDate(manudate);
 		
+		String manuDate = product.getManuDate().replace("-", "");
+		product.setManuDate(manuDate);
+		System.out.println(manuDate);
+		
+//		String md = product.getManuDate(); 
+//		String[] manu = md.split("-");
+//		String manudate = manu[0]+manu[1]+manu[2];
+//		product.setManuDate(manudate);
+//		
 		productService.addProduct(product);
 		
 		

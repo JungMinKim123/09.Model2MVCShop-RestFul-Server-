@@ -37,8 +37,8 @@
 <insert id="insertProduct" parameterType="product">
   INSERT
   INTO product 
-  VALUES (seq_product_prod_no.NEXTVAL, #{prodName}, #{prodDetail},
-  		  #{manuDate}, #{price}, #{fileName}, SYSDATE)
+  VALUES (seq_product_prod_no.NEXTVAL, #{prodName:VARCHAR}, #{prodDetail:VARCHAR},
+  		  #{manuDate:VARCHAR}, #{price:NUMERIC}, #{fileName:VARCHAR}, SYSDATE)
 </insert>
 
 <select id="findProduct" parameterType="product" resultMap="productSelectMap">
@@ -52,13 +52,13 @@
 <update id="updateProduct" parameterType="product">
   UPDATE product
   <set>
-    prod_name = #{prodName},
-    prod_detail = #{prodDetail},
-    manufacture_day = #{manuDate},
-    price = #{price},
-    image_file = #{fileName}
+    prod_name = #{prodName:VARCHAR},
+    prod_detail = #{prodDetail:VARCHAR},
+    manufacture_day = #{manuDate:VARCHAR},
+    price = #{price:NUMERIC},
+    image_file = #{fileName:VARCHAR}
   </set>
-    WHERE prod_no= #{prodNo}
+    WHERE prod_no= #{prodNo:NUMERIC}
 </update>
 
 <select id="getProductList" parameterType="search" resultMap="productSelectMap">
