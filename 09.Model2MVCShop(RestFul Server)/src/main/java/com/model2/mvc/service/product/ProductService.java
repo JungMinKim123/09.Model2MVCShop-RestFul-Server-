@@ -1,5 +1,6 @@
 package com.model2.mvc.service.product;
 
+import java.util.List;
 import java.util.Map;
 
 import com.model2.mvc.common.Search;
@@ -15,4 +16,9 @@ public interface ProductService {
 	
 	public void updateProduct(Product product) throws Exception;
 	
+	public void addFile(Product product) throws Exception;
+	
+	public List<String> getFile(Product product) throws Exception;
+	
+	public void updateFile(Product product) throws Exception;
 }

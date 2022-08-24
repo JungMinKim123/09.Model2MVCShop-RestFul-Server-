@@ -16,6 +16,7 @@ function fncAddProduct(){
 	var detail = $("input[name='prodDetail']").val();
 	var manuDate = $("input[name='manuDate']").val();
 	var price = $("input[name='price']").val();
+	var fileName = $("input[name='fileUploadName']");
 
 	if(name == null || name.length<1){
 		alert("상품명은 반드시 입력하여야 합니다.");
@@ -33,6 +34,10 @@ function fncAddProduct(){
 		alert("가격은 반드시 입력하셔야 합니다.");
 		return;
 	}
+	if(fileName[0].files.length>4){
+		alert("파일첨부는 3개까지 입니다.");
+		return;
+	}
 	
 	//document.detailForm.action='/product/addProduct';
 	//document.detailForm.submit();
@@ -46,6 +51,7 @@ function fncAddProduct(){
 		$("td.ct_btn01:contains('등록')").on("click", function() {
 			fncAddProduct();
 		});
+		
 	});
 	//function resetData(){
 	//document.detailForm.reset();
@@ -151,7 +157,7 @@ function fncAddProduct(){
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input		type="file" name="fileUploadName" class="ct_input_g" 
+			<input	multiple="multiple"	type="file" name="fileUploadName" class="ct_input_g" 
 							style="width: 200px; height: 19px" maxLength="13"/>
 		</td>
 	</tr>

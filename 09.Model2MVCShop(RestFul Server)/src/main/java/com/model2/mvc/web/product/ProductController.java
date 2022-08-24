@@ -3,6 +3,9 @@ package com.model2.mvc.web.product;
 import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -51,14 +54,20 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value="addProduct", method = RequestMethod.POST)
-	public String addProduct(@ModelAttribute("ProdVO") Product product, @RequestParam("fileUploadName") MultipartFile file) throws Exception{
+	public String addProduct(@ModelAttribute("ProdVO") Product product, @RequestParam("fileUploadName") List<MultipartFile> multipartFile) throws Exception{
 		
 		System.out.println("/product/addProduct : POST");
+
+		List<String> file = new ArrayList<String>();
 		
-		if(file != null & file.getSize() >0) {
+		for (int i = 0; i < multipartFile.size(); i++) {
 			
-			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
-			product.setFileName(file.getOriginalFilename());
+			
+			if(multipartFile.get(i) != null & multipartFile.get(i).getSize() >0) {
+				multipartFile.get(i).transferTo(new File(uploadTempDir, multipartFile.get(i).getOriginalFilename()));
+				file.add(multipartFile.get(i).getOriginalFilename());
+				product.setFileName(file);
+			}
 		}
 		
 		String manuDate = product.getManuDate().replace("-", "");
@@ -70,8 +79,11 @@ public class ProductController {
 //		String manudate = manu[0]+manu[1]+manu[2];
 //		product.setManuDate(manudate);
 //		
-		productService.addProduct(product);
+		System.out.println(file);
+		System.out.println("fileName : "+product.getFileName());
 		
+		productService.addProduct(product);
+		productService.addFile(product);
 		
 		return "forward:/product/readProductView.jsp";
 	}
@@ -82,7 +94,10 @@ public class ProductController {
 		
 		System.out.println("/product/getProduct : GET");
 		Product prod = productService.getProduct(prodNo);
+		List<String> file = productService.getFile(prod);
+		
 		model.addAttribute("prod",prod);
+		model.addAttribute("list",file);
 		
 		String history = "";
 		Cookie[] cookies = request.getCookies();
@@ -102,14 +117,24 @@ public class ProductController {
 	
 //	@RequestMapping("/updateProduct.do")
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("update") Product prod, @RequestParam("fileUploadName") MultipartFile file) throws Exception{
+	public String updateProduct(@ModelAttribute("update") Product prod, @RequestParam("fileUploadName") List<MultipartFile> multipartFile) throws Exception{
 		
 		System.out.println("/product/updateProduct : POST");
-		if( file != null & file.getSize() >0) {
-			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
-			prod.setFileName(file.getOriginalFilename());
+
+		List<String> file = new ArrayList<String>();
+			
+			for (int i = 0; i < multipartFile.size(); i++) {
+			
+			if(multipartFile.get(i) != null & multipartFile.get(i).getSize() >0) {
+			
+				multipartFile.get(i).transferTo(new File(uploadTempDir, multipartFile.get(i).getOriginalFilename()));
+				file.add(multipartFile.get(i).getOriginalFilename());
+			}
 		}
+				prod.setFileName(file);
+		System.out.println(prod.getFileName().toString());
 		productService.updateProduct(prod);
+		productService.updateFile(prod);
 		
 		return "forward:/product/updateReadProduct.jsp";
 	}

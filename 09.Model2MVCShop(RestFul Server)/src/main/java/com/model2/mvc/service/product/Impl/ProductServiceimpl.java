@@ -12,6 +12,7 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.service.product.ProductDao;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.domain.Product;
+import com.model2.mvc.service.file.FileDao;
 
 @Service("productServiceImpl")
 public class ProductServiceimpl implements ProductService{
@@ -19,8 +20,17 @@ public class ProductServiceimpl implements ProductService{
 	@Autowired
 	@Qualifier("productDaoImpl")
 	private ProductDao productDao;
+
+	@Autowired
+	@Qualifier("fileDaoImpl")
+	private FileDao fileDao;
+	
 	public void setProductDao(ProductDao productDao) {
 		this.productDao = productDao;
+	}
+	
+	public void setFileDao(FileDao fileDao) {
+		this.fileDao = fileDao;
 	}
 	
 	public ProductServiceimpl() {
@@ -31,8 +41,21 @@ public class ProductServiceimpl implements ProductService{
 		productDao.insertProduct(product);
 	}
 	
+	public void addFile(Product product) throws Exception{
+		
+		fileDao.addFile(product);
+	}
+	
 	public Product getProduct(int productNo) throws Exception{
 		return productDao.findProduct(productNo);
+	}
+
+	public List<String> getFile(Product product) throws Exception{
+		
+		//List<String> fileList = fileDao.findFile(product);
+		
+		//return fileList;
+		return fileDao.findFile(product);
 	}
 	
 	public Map<String, Object> getProductList(Search search) throws Exception{
@@ -47,6 +70,11 @@ public class ProductServiceimpl implements ProductService{
 	
 	public void updateProduct(Product product) throws Exception{
 		productDao.updateProduct(product);
+	}
+
+	public void updateFile(Product product) throws Exception {
+		fileDao.updateFile(product);
+		
 	}
 	
 }

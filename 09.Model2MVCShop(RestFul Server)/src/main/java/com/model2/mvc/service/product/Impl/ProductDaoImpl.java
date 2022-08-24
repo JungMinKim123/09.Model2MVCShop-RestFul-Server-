@@ -22,6 +22,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 	
 	public ProductDaoImpl() {
+		System.out.println(this.getClass());
 	}
 
 	@Override

@@ -88,7 +88,9 @@ $(function() {
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<img src = "/images/uploadFiles/${prod.fileName }"/>
+	<c:forEach var="file" items="${ list }">
+			<img src = "/images/uploadFiles/${file}"/>
+	</c:forEach>
 		</td>
 	</tr>
 	<tr>
